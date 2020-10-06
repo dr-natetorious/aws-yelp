@@ -1,6 +1,12 @@
 version: 0.2
 
 phases:
+  pre_build:
+    - mkdir -p artifacts
   build:
     commands:
-      - ls
+      - mkdir -p lambda/layers/photo-deps/python
+      - pip install --target lambda/layers/photo-deps/python matplotlib
+      - pip install --target lambda/layers/photo-deps/python opencv-python
+      - zip -r artifacts/photo-deps.zip lambda/layers/photo-deps/
+      
