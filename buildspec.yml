@@ -10,3 +10,6 @@ phases:
       - pip install --target lambda/layers/photo-deps/python matplotlib
       - pip install --target lambda/layers/photo-deps/python opencv-python
       - pushd lambda/layers/photo-deps && zip -r ../../../artifacts/photo-deps.zip . && popd
+  post_build:
+    commands:
+      - aws s3 cp artifacts/photo-deps.zip s3://nbachmei.personal/artifacts/photo-deps.zip      
