@@ -9,4 +9,4 @@ phases:
       - mkdir -p lambda/layers/photo-deps/python
       - pip install --target lambda/layers/photo-deps/python matplotlib
       - pip install --target lambda/layers/photo-deps/python opencv-python
-      - pushd lambda/layers/photo-deps && zip -r ../../../artifacts/photo-deps.zip lambda/layers/photo-deps/ && popd
+      - pushd lambda/layers/photo-deps && zip -r ../../../artifacts/photo-deps.zip . && popd
