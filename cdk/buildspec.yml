@@ -10,8 +10,9 @@ phases:
       - pip install -r cdk/requirements.txt
   build:
     commands:
-      - cd cdk
-      - cdk synth
+      - mkdir -p lambda/layers/photo-deps/python
+      - pip install --target lambda/layers/photo-deps/python -r lambda/yelp-photo-resize/requirements.txt      
   post_build:
     commands:
-      - echo post
+      - cd cdk
+      - cdk synth
