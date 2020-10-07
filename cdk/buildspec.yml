@@ -3,10 +3,10 @@ version: 0.2
 phases:
   install:
     commands:
-      - ls
+      - echo install
   pre_build:
     commands:
-      - 
+      - echo pre
   build:
     commands:
       - echo build
