@@ -15,7 +15,7 @@ class PhotoResizer(core.Stack):
 
         self.dep_layers = lambda_.LayerVersion(self,'YelpPhotoResizerDeps',
             code=lambda_.Code.from_asset(
-                os.path.join(src_root_dir, 'lambda/layer/photo-deps/')),
+                os.path.join(src_root_dir, 'lambda/layers/photo-deps/')),
             compatible_runtimes=[lambda_.Runtime.PYTHON_3_8],
             description="Dependencies of lambda://yelp-photo-resize")
 
