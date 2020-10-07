@@ -24,20 +24,35 @@ def lambda_handler(event, context):
   
   # Fetch the requeseted object
   task = event['tasks'][0]
-  process_task(task)
   
-  return {
-    "invocationSchemaVersion": "1.0",
-    "treatMissingKeysAs" : "Succeeded",
-    "invocationId" : event["invocationId"],
-    "results": [
-      {
-        "taskId": task['taskId'],
-        "resultCode": "Succeeded",
-        "resultString": "taco"
-      }
-    ]
-  }
+  try:
+    process_task(task)
+  
+    return {
+      "invocationSchemaVersion": "1.0",
+      "treatMissingKeysAs" : "Succeeded",
+      "invocationId" : event["invocationId"],
+      "results": [
+        {
+          "taskId": task['taskId'],
+          "resultCode": "Succeeded",
+          "resultString": "taco"
+        }
+      ]
+    }
+  except:
+    return {
+      "invocationSchemaVersion": "1.0",
+      "treatMissingKeysAs" : "Succeeded",
+      "invocationId" : event["invocationId"],
+      "results": [
+        {
+          "taskId": task['taskId'],
+          "resultCode": "TemporaryFailure",
+          "resultString": "taco"
+        }
+      ]
+    }
 
 @xray_recorder.capture('process_task')
 def process_task(task):
@@ -64,7 +79,7 @@ def process_task(task):
   pixels = np.array(grey).flatten()
   save_image(key=key, pixels=pixels)
 
-@xray_recorder.capture('save_image')
+@xray_recorder.capture('save_image')  
 def save_image(key, pixels):
   """
   Writes the resized image into Dynamo
