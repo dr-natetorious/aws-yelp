@@ -16,3 +16,4 @@ phases:
     commands:
       - cd cdk
       - cdk synth
+      - cdk deploy
