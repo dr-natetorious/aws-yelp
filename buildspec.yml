@@ -12,8 +12,7 @@ phases:
       - mkdir -p lambda/layers/photo-deps/python
       - pip install --target lambda/layers/photo-deps/python Pillow
       - pip install --target lambda/layers/photo-deps/python numpy
-      - #pip install --target lambda/layers/photo-deps/python matplotlib
-      - #pip install --target lambda/layers/photo-deps/python opencv-python
+      - pip install --target lambda/layers/photo-deps/python boto3
       - pushd lambda/layers/photo-deps && zip -r ../../../artifacts/photo-deps.zip . && popd
   post_build:
     commands:
