@@ -10,10 +10,7 @@ phases:
   build:
     commands:
       - mkdir -p lambda/layers/photo-deps/python
-      - pip install --target lambda/layers/photo-deps/python Pillow
-      - pip install --target lambda/layers/photo-deps/python numpy
-      - pip install --target lambda/layers/photo-deps/python boto3
-      - pip install --target lambda/layers/photo-deps/python aws-xray-sdk
+      - pip install --target lambda/layers/photo-deps/python -r lambda/yelp-photo-resize/requirements.txt
       - pushd lambda/layers/photo-deps && zip -r ../../../artifacts/photo-deps.zip . && popd
   post_build:
     commands:
