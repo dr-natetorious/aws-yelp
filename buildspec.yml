@@ -13,6 +13,7 @@ phases:
       - pip install --target lambda/layers/photo-deps/python Pillow
       - pip install --target lambda/layers/photo-deps/python numpy
       - pip install --target lambda/layers/photo-deps/python boto3
+      - pip install --target lambda/layers/photo-deps/python aws-xray-sdk
       - pushd lambda/layers/photo-deps && zip -r ../../../artifacts/photo-deps.zip . && popd
   post_build:
     commands:
