@@ -3,7 +3,7 @@ version: 0.2
 phases:
   install:
     commands:
-      - yum update -y
+      - # yum update -y
   pre_build:
     commands:
       - mkdir -p artifacts
