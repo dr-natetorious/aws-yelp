@@ -3,11 +3,11 @@ version: 0.2
 phases:
   install:
     commands:
-      - apt-get -y update && apt-get -y install npm zip git
-      - npm install -g aws-cdk
+      - #apt-get -y update && apt-get -y install npm zip git
+      - #npm install -g aws-cdk
   pre_build:
     commands:
-      - pip install -r cdk/requirements.txt
+      - #pip install -r cdk/requirements.txt
   build:
     commands:
       - mkdir -p lambda/layers/photo-deps/python
