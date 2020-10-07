@@ -3,13 +3,15 @@ version: 0.2
 phases:
   install:
     commands:
-      - echo install
+      - apt-get -y update && apt-get -y install npm zip git
+      - npm install -g aws-cdk
   pre_build:
     commands:
-      - echo pre
+      - pip install -r cdk/requirements.txt
   build:
     commands:
-      - echo build
+      - cd cdk
+      - cdk synth
   post_build:
     commands:
       - echo post
