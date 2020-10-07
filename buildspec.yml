@@ -1,14 +1,18 @@
 version: 0.2
 
 phases:
+  install:
+    commands:
+      - yum update -y
   pre_build:
     commands:
       - mkdir -p artifacts
   build:
     commands:
       - mkdir -p lambda/layers/photo-deps/python
-      - pip install --target lambda/layers/photo-deps/python matplotlib
-      - pip install --target lambda/layers/photo-deps/python opencv-python
+      - pip install --target lambda/layers/photo-deps/python Pillow
+      - #pip install --target lambda/layers/photo-deps/python matplotlib
+      - #pip install --target lambda/layers/photo-deps/python opencv-python
       - pushd lambda/layers/photo-deps && zip -r ../../../artifacts/photo-deps.zip . && popd
   post_build:
     commands:
