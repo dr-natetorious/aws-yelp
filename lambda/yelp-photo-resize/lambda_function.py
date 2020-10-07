@@ -4,6 +4,11 @@ import boto3
 import urllib
 from PIL import Image
 
+# Initialize AWS XRAY
+from aws_xray_sdk.core import xray_recorder
+from aws_xray_sdk.core import patch_all
+patch_all()
+
 # Initialize and long running objects...
 s3 = boto3.resource('s3')
 dynamo = boto3.resource('dynamodb')
@@ -15,7 +20,7 @@ def lambda_handler(event, context):
   """
 
   # Debug print... 
-  print(json.dumps(event))
+  #print(json.dumps(event))
   
   # Fetch the requeseted object
   task = event['tasks'][0]
@@ -34,6 +39,7 @@ def lambda_handler(event, context):
     ]
   }
 
+@xray_recorder.capture('process_task')
 def process_task(task):
   """
   Processes an individual task from the S3 BatchJob
@@ -41,7 +47,9 @@ def process_task(task):
   # Extract the requested file information...
   bucket = task['s3BucketArn'].split(':')[-1]
   key = urllib.parse.unquote(task['s3Key'])
-  print('Task requested s3://{b}/{k}'.format(b=bucket, k=key))
+  #print('Task requested s3://{b}/{k}'.format(b=bucket, k=key))
+  xray_recorder.put_annotation('bucket',bucket)
+  xray_recorder.put_annotation('key',key)
   
   # Attempt to download the file and process it
   # Transformation includes:
@@ -55,13 +63,15 @@ def process_task(task):
   grey = im.convert('L')
   pixels = np.array(grey).flatten()
   save_image(key=key, pixels=pixels)
-  
+
+@xray_recorder.capture('save_image')
 def save_image(key, pixels):
   """
   Writes the resized image into Dynamo
   """    
   photo_id = key.split('/')[-1]
-  print('Saving {id} of {shape} to dynamo'.format(id=photo_id,shape=pixels.shape))
+  xray_recorder.put_annotation('photo_id',photo_id)
+  #print('Saving {id} of {shape} to dynamo'.format(id=photo_id,shape=pixels.shape))
 
   table.put_item(
     Item={
@@ -69,4 +79,3 @@ def save_image(key, pixels):
       'sort_key': 'train::64x64',
       'pixels': pixels.tolist()
     })
-
