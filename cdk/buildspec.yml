@@ -4,14 +4,14 @@ phases:
   install:
     commands:
       - pwd
-      - find .
   pre_build:
     commands:
       - echo pre_build
   build:
     commands:
       - mkdir -p lambda/layers/photo-deps/python
-      - pip install --target lambda/layers/photo-deps/python -r lambda/yelp-photo-resize/requirements.txt      
+      - pip install --target lambda/layers/photo-deps/python -r lambda/yelp-photo-resize/requirements.txt
+      - find .
   post_build:
     commands:
       - cd cdk
