@@ -29,10 +29,22 @@ class YelpNetwork(core.Stack):
                         name='MiddleTier-', subnet_type= ec2.SubnetType.ISOLATED,cidr_mask=24)
             ])
 
-        ec2.CfnVPCPeeringConnection(self, "Website-to-DataNet",
+        # Establish networking between from the WebSite to DataNet
+        # This requires first peering the VPCs
+        self.__peerWebToDataNet = ec2.CfnVPCPeeringConnection(self, "Website-to-DataNet",
             vpc_id=self.__website.vpc_id,
             peer_vpc_id= self.__dataNet.vpc_id)
 
+        # Then adding a route for the network traffic
+        x = 0
+        for subnet in self.__website.isolated_subnets:
+            x += 1
+            ec2.CfnRoute(self, "PeeringWebsite-to-DataNet{}".format(x),
+                destination_cidr_block="10.10.0.0/16",
+                route_table_id= subnet.route_table.route_table_id,
+                vpc_peering_connection_id= self.__peerWebToDataNet.ref)
+
+        # Next create the CorpNet[work]
         self.__corpNet = ec2.Vpc(self, "CorpNet", cidr="10.30.0.0/16",
             subnet_configuration= [
                     ec2.SubnetConfiguration(
@@ -45,14 +57,22 @@ class YelpNetwork(core.Stack):
                         name='Private-Marketing-', subnet_type= ec2.SubnetType.ISOLATED, cidr_mask=24),
             ])
 
+        # Establish networking from the corporate network to DataNet
+        # ec2.CfnVPCPeeringConnection(self, "CorpNet-to-Website",
+        #     vpc_id=self.__corpNet.vpc_id,
+        #     peer_vpc_id= self.__website.vpc_id)
 
-        ec2.CfnVPCPeeringConnection(self, "CorpNet-to-Website",
-            vpc_id=self.__corpNet.vpc_id,
-            peer_vpc_id= self.__website.vpc_id)
-
-        ec2.CfnVPCPeeringConnection(self, "CorpNet-to-DataLake",
+        self.__peerCorpToDataNet = ec2.CfnVPCPeeringConnection(self, "CorpNet-to-DataNet",
             vpc_id=self.__corpNet.vpc_id,
             peer_vpc_id= self.__dataNet.vpc_id)
+
+        x = 0
+        for subnet in self.__corpNet.isolated_subnets:
+            x += 1
+            ec2.CfnRoute(self, "PeeringCorp-to-DataNet{}".format(x),
+                destination_cidr_block="10.10.0.0/16",
+                route_table_id= subnet.route_table.route_table_id,
+                vpc_peering_connection_id= self.__peerCorpToDataNet.ref)
 
     @property
     def datanet_vpc(self):
