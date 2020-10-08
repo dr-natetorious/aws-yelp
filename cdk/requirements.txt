@@ -2,3 +2,4 @@ virtualenv
 aws-cdk.aws-s3
 aws-cdk.aws-lambda
 aws-cdk.assets
+aws-cdk.aws_ec2

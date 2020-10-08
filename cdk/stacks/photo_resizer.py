@@ -9,7 +9,7 @@ from aws_cdk import (
 
 class PhotoResizer(core.Stack):
     """
-    Creates 
+    Creates a Python to receive calls from Amazon S3 Batch
     """
     def __init__(self, scope: core.Construct, id: str, src_root_dir:str, **kwargs) -> None:
         super().__init__(scope, id, **kwargs)
