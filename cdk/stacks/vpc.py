@@ -19,9 +19,7 @@ class YelpNetwork(core.Stack):
                 ec2.SubnetConfiguration(
                     name='MiddleTier-', subnet_type= ec2.SubnetType.PRIVATE,cidr_mask=24),
                 ec2.SubnetConfiguration(
-                    name='ElasticSearch-', subnet_type= ec2.SubnetType.PRIVATE, cidr_mask=25),
-                ec2.SubnetConfiguration(
-                    name='Redshift-', subnet_type= ec2.SubnetType.PRIVATE, cidr_mask=25)
+                    name='ElasticSearch-', subnet_type= ec2.SubnetType.PRIVATE, cidr_mask=25)
             ])
 
 
