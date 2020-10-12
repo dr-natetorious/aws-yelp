@@ -15,4 +15,4 @@ phases:
     commands:
       - cd cdk
       - cdk synth
-      - cdk deploy --require-approval never
+      - cdk deploy --require-approval never *
